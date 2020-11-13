@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="ViewModels\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Pharmacist.Common" Version="1.9.1" />
+    <PackageReference Include="Pharmacist.MSBuild" Version="1.9.1" />
+    <PackageReference Include="ReactiveUI.Fody" Version="12.1.5" />
+    <PackageReference Include="ReactiveUI" Version="12.1.5" />
+  </ItemGroup>
+</Project>
