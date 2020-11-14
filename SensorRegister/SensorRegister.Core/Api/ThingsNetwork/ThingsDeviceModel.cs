@@ -1,21 +1,22 @@
 ﻿using System;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace SensorRegister.Core.Api.ThingsNetwork
 {
     public class ThingsDeviceModel
     {
-        [JsonPropertyName("app_id")]
+        [JsonProperty("app_id")]
         public string AppId { get; set; }
 
-        [JsonPropertyName("dev_id")]
+        [JsonProperty("dev_id")]
         public string DeviceId { get; set; }
 
-        [JsonPropertyName("description")]
+        [JsonProperty("description")]
         public string Description { get; set; }
 
-        [JsonPropertyName("lorawan_device")]
+        [JsonProperty("lorawan_device")]
         public ThingsDeviceLorawan Device { get; set; }
 
         public ThingsDeviceModel()

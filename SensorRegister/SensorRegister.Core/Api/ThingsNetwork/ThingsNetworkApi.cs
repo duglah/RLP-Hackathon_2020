@@ -2,7 +2,9 @@ using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace SensorRegister.Core.Api.ThingsNetwork
 {
@@ -22,8 +24,9 @@ namespace SensorRegister.Core.Api.ThingsNetwork
         {
             var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("key", key);
-            var httpContent = new StringContent(requestString, Encoding.UTF8, "application/json");
-            var result = await client.PostAsync($"http://eu.thethings.network:8084/applications/brickmakers_office_air_quality/devices/{device.DeviceId}", httpContent);
+            var json = JsonConvert.SerializeObject(device);
+            var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+            var result = await client.PostAsync($"http://eu.thethings.network:8084/applications/brickmakers_office_air_quality/devices", httpContent);
             var s = await result.Content.ReadAsStringAsync();
         }
 

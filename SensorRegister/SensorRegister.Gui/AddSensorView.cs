@@ -20,7 +20,7 @@ namespace SensorRegister.Gui
                 // .SetHorizontalMargin(2)
                 .Add(new Label(" "))
                 .Add(InputField("-Device ID", vm => vm.DeviceID))
-                .Add(InputField("-Device EUI", vm => vm.DeviceEUI, "AFFEAFFE"))
+                .Add(InputField("-Device EUI", vm => vm.DeviceEUI))
                 .Add(InputField("-App Key", vm => vm.AppKey))
                 .Add(InputField("-App EUI", vm => vm.AppEUI, "70B3D57ED0035458"))
                 .Below(new Label("  "))
