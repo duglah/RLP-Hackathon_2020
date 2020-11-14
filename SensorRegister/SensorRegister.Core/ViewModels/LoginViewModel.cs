@@ -25,9 +25,11 @@ namespace SensorRegister.Core.ViewModels
 		readonly ObservableAsPropertyHelper<int> _usernameLength;
 		readonly ObservableAsPropertyHelper<int> _passwordLength;
 		readonly ObservableAsPropertyHelper<bool> _isValid;
+		readonly Router _router;
 
-		public LoginViewModel()
+		public LoginViewModel(Router router)
 		{
+			_router = router;
 			var canLogin = this.WhenAnyValue(
 				x => x.Username,
 				x => x.Password,
@@ -37,8 +39,12 @@ namespace SensorRegister.Core.ViewModels
 
 			_isValid = canLogin.ToProperty(this, x => x.IsValid);
 			Login = ReactiveCommand.CreateFromTask(
-				() => Task.Delay(TimeSpan.FromSeconds(1)),
+				() => Task.Delay(TimeSpan.FromSeconds(2)),
 				canLogin);
+			Login.Subscribe(_ =>
+			{
+				_router.ShowAddSensor();
+			});
 
 			_usernameLength = this
 				.WhenAnyValue(x => x.Username)
