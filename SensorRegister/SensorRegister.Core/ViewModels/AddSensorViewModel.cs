@@ -39,6 +39,7 @@ namespace SensorRegister.Core.ViewModels
                             AppEUI = AppEUI
                         }
                     };
+                    
                     await ThingsNetworkDevicesApi.AddDevice(device);
 
                     _onDeviceAdded.OnNext(device);

@@ -34,7 +34,7 @@ namespace SensorRegister.Gui
 
             ViewModel.OnError.Subscribe(err =>
             {
-                MessageBox.ErrorQuery(40, 40, err.Message, err.StackTrace, "damn");
+                MessageBox.ErrorQuery(40, 15, err.Message, err.Message+"\n"+err.StackTrace, "damn");
             }).DisposeWith(_disposable);
         }
 
