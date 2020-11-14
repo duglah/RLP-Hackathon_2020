@@ -20,17 +20,22 @@ namespace SensorRegister.Gui
                 // .SetHorizontalMargin(2)
                 .Add(new Label(" "))
                 .Add(InputField("-Device ID", vm => vm.DeviceID))
+                .Add(InputField("-Description", vm => vm.Description))
                 .Add(InputField("-Device EUI", vm => vm.DeviceEUI))
-                .Add(InputField("-App Key", vm => vm.AppKey))
+                // .Add(InputField("-App Key", vm => vm.AppKey))
                 .Add(InputField("-App EUI", vm => vm.AppEUI, "70B3D57ED0035458"))
                 .Below(new Label("  "))
-                .Below(new Label("----------------------"))
+                .Below(StatusLabel())
                 .Below(new Label("  "))
                 .ToTheRight(AddDeviceButton("add"))
                 .ToTheRight(new Label("  "))
                 .ToTheRight(ClearButton("clear"))
-                
                 .Build(this);
+
+            ViewModel.OnError.Subscribe(err =>
+            {
+                MessageBox.ErrorQuery(40, 40, err.Message, err.StackTrace, "damn");
+            }).DisposeWith(_disposable);
         }
 
 
@@ -74,6 +79,17 @@ namespace SensorRegister.Gui
                 .DisposeWith(_disposable);
 
             return addDeviceButton;
+        }
+        
+        View StatusLabel()
+        {
+            var empty = "----------------------";
+            
+            var label = new Label(empty);
+
+            ViewModel.OnDeviceAdded.Subscribe(device => label.Text = $"-> added {device.DeviceId}" ).DisposeWith(_disposable);
+
+            return label;
         }
 
         Button ClearButton(string label = "Clear")
