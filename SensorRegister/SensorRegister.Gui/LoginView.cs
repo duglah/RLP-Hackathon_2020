@@ -7,13 +7,13 @@ using Terminal.Gui;
 
 namespace SensorRegister.Gui
 {
-    public class LoginView : Window, IViewFor<LoginViewModel>
+    public class LoginView : BaseWindow<LoginViewModel>
     {
-        readonly CompositeDisposable _disposable = new CompositeDisposable();
+        
 
-        public LoginView(LoginViewModel viewModel) : base("Reactive Extensions Example")
+        public LoginView(LoginViewModel viewModel) : base(viewModel, "Reactive Extensions Example")
         {
-            ViewModel = viewModel;
+            
             var title = TitleLabel();
             var usernameLengthLabel = UsernameLengthLabel(title);
             var usernameInput = UsernameInput(usernameLengthLabel);
@@ -23,14 +23,6 @@ namespace SensorRegister.Gui
             var loginButton = LoginButton(validationLabel);
             var clearButton = ClearButton(loginButton);
             LoginProgressLabel(clearButton);
-        }
-
-        public LoginViewModel ViewModel { get; set; }
-
-        protected override void Dispose(bool disposing)
-        {
-            _disposable.Dispose();
-            base.Dispose(disposing);
         }
 
         Label TitleLabel()
@@ -198,12 +190,6 @@ namespace SensorRegister.Gui
                 .DisposeWith(_disposable);
             Add(clearButton);
             return clearButton;
-        }
-
-        object IViewFor.ViewModel
-        {
-            get => ViewModel;
-            set => ViewModel = (LoginViewModel) value;
         }
     }
 }
