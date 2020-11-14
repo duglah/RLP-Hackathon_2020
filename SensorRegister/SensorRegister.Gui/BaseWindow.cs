@@ -12,6 +12,7 @@ using Terminal.Gui;
 
 namespace SensorRegister.Gui
 {
+
     public abstract class BaseWindow<TViewModel> : Window, IViewFor<TViewModel> where TViewModel : DisposableViewModel
     {
         protected readonly CompositeDisposable _disposable = new CompositeDisposable();

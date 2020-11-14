@@ -1,4 +1,6 @@
-﻿using System.Reactive.Concurrency;
+﻿using System;
+using System.Reactive.Concurrency;
+using System.Reactive.Disposables;
 using System.Threading;
 using ReactiveUI;
 using SensorRegister.Core;
@@ -14,13 +16,13 @@ namespace SensorRegister.Gui
             Application.Init();
             RxApp.MainThreadScheduler = TerminalScheduler.Default;
             RxApp.TaskpoolScheduler = TaskPoolScheduler.Default;
-            
+
             var router = new Router();
 
             router.ShowLogin = () => ShowWindow(new LoginView(new LoginViewModel(router)));
-            router.ShowDevices = () => Application.Run(new DevicesView(new DevicesViewModel(router)));
-            router.ShowAddSensor = () => Application.Run(new AddSensorView(new AddSensorViewModel(router)));
-            
+            router.ShowDevices = () => ShowWindow(new DevicesView(new DevicesViewModel(router)));
+            router.ShowAddSensor = () => ShowWindow(new AddSensorView(new AddSensorViewModel(router)));
+
             router.ShowDevices();
         }
 
