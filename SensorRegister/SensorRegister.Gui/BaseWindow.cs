@@ -5,13 +5,14 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using NStack;
 using ReactiveUI;
+using SensorRegister.Core;
 using SensorRegister.Core.ViewModels;
 using SensorRegister.Gui.Utils;
 using Terminal.Gui;
 
 namespace SensorRegister.Gui
 {
-    public abstract class BaseWindow<TViewModel> : Window, IViewFor<TViewModel> where TViewModel : class
+    public abstract class BaseWindow<TViewModel> : Window, IViewFor<TViewModel> where TViewModel : DisposableViewModel
     {
         protected readonly CompositeDisposable _disposable = new CompositeDisposable();
         protected readonly Color backgroundColor = Color.Black;
@@ -27,6 +28,7 @@ namespace SensorRegister.Gui
         protected override void Dispose(bool disposing)
         {
             _disposable.Dispose();
+            ViewModel.Dispose();
             base.Dispose(disposing);
         }
 

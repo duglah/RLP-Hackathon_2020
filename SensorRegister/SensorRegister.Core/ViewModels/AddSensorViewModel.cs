@@ -1,5 +1,6 @@
 using System;
 using System.Reactive;
+using System.Reactive.Disposables;
 using System.Reactive.Subjects;
 using System.Runtime.Serialization;
 using System.Threading;
@@ -10,7 +11,7 @@ using SensorRegister.Core.Api.ThingsNetwork;
 namespace SensorRegister.Core.ViewModels
 {
     [DataContract]
-    public class AddSensorViewModel : ReactiveObject
+    public class AddSensorViewModel : DisposableViewModel
     {
         readonly ObservableAsPropertyHelper<bool> _isValid;
         readonly Router _router;
@@ -39,7 +40,7 @@ namespace SensorRegister.Core.ViewModels
                             AppEUI = AppEUI
                         }
                     };
-                    
+
                     await ThingsNetworkDevicesApi.AddDevice(device);
 
                     _onDeviceAdded.OnNext(device);
@@ -48,19 +49,20 @@ namespace SensorRegister.Core.ViewModels
                 }
                 catch (Exception err)
                 {
-                    _onError.OnNext(err);
                     Beep(2);
+                    _onError.OnNext(err);
                 }
-            });
+            }).DisposeWith(_disposable);
 
             Clear = ReactiveCommand.Create(() => { });
             Clear.Subscribe(unit =>
             {
                 DeviceID = string.Empty;
-                DeviceEUI = string.Empty;
-                AppKey = string.Empty;
-                AppEUI = string.Empty;
-            });
+                DeviceEUI = Utils.RandomByteString(8);
+            }).DisposeWith(_disposable);
+
+            Cancel = ReactiveCommand.Create(() => { });
+            Cancel.Subscribe(_ => _router.ShowDevices()).DisposeWith(_disposable);
         }
 
         void Beep(int times = 1)
@@ -78,14 +80,20 @@ namespace SensorRegister.Core.ViewModels
 
         [Reactive, DataMember] public string AppKey { get; set; } = string.Empty;
 
-        [Reactive, DataMember] public string AppEUI { get; set; } = "70B3D57ED0035458"; //string.Empty;
+        [Reactive, DataMember] public string AppEUI { get; set; } = "70B3D57ED0035458"; 
 
         [IgnoreDataMember] public ReactiveCommand<Unit, Unit> AddDevice { get; }
 
         [IgnoreDataMember] public ReactiveCommand<Unit, Unit> Clear { get; }
+        [IgnoreDataMember] public ReactiveCommand<Unit, Unit> Cancel { get; }
 
 
         public IObservable<Exception> OnError => _onError;
         public IObservable<ThingsDeviceModel> OnDeviceAdded => _onDeviceAdded;
+
+        public void Dispose()
+        {
+            _disposable.Dispose();
+        }
     }
 }

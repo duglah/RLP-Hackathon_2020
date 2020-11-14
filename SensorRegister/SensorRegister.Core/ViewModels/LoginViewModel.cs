@@ -20,7 +20,7 @@ namespace SensorRegister.Core.ViewModels
 	// See also: https://www.reactiveui.net/docs/handbook/data-persistence/
 	//
 	[DataContract]
-	public class LoginViewModel : ReactiveObject
+	public class LoginViewModel : DisposableViewModel
 	{
 		readonly ObservableAsPropertyHelper<int> _usernameLength;
 		readonly ObservableAsPropertyHelper<int> _passwordLength;

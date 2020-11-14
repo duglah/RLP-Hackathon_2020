@@ -30,6 +30,8 @@ namespace SensorRegister.Gui
                 .ToTheRight(AddDeviceButton("add"))
                 .ToTheRight(new Label("  "))
                 .ToTheRight(ClearButton("clear"))
+                .Below(new Label("  "))
+                .ToTheRight(CancelButton("cancel"))
                 .Build(this);
 
             ViewModel.OnError.Subscribe(err =>
@@ -83,7 +85,7 @@ namespace SensorRegister.Gui
         
         View StatusLabel()
         {
-            var empty = "----------------------";
+            var empty = "-----------------------------";
             
             var label = new Label(empty);
 
@@ -101,14 +103,16 @@ namespace SensorRegister.Gui
                 .DisposeWith(_disposable);
             return clearButton;
         }
-        //
-        // View ErrorView()
-        // {
-        //     var label = new Label("");
-        //
-        //     ViewModel.Errors.Subscribe(err => label.Text = err.Message).DisposeWith(_disposable);
-        //
-        //     return label;
-        // }
+        
+        Button CancelButton(string label = "Cancel")
+        {
+            var cancelButton = new Button(label);
+            Terminal.Gui.EventExtensions.Events(cancelButton)
+                .Clicked
+                .InvokeCommand(ViewModel, x => x.Cancel)
+                .DisposeWith(_disposable);
+            return cancelButton;
+        }
+        
     }
 }
