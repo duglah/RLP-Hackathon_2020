@@ -4,6 +4,7 @@ using System.Runtime.Serialization;
 using System.Threading;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using SensorRegister.Core.Api.ThingsNetwork;
 
 namespace SensorRegister.Core.ViewModels
 {
@@ -15,10 +16,23 @@ namespace SensorRegister.Core.ViewModels
 
         public AddSensorViewModel(Router router)
         {
+            
+            
             _router = router;
             AddDevice = ReactiveCommand.Create(() => { });
-            AddDevice.Subscribe(unit =>
+            AddDevice.Subscribe(async unit =>
             {
+                await ThingsNetworkDevicesApi.AddDevice(new ThingsDeviceModel
+                {
+                    AppId = ThingsNetworkDevicesApi.app_id,
+                    Description = "test description",
+                    DeviceId = DeviceID,
+                    Device = new ThingsDeviceLorawan{
+                    AppId = ThingsNetworkDevicesApi.app_id,
+                    DeviceEUI = DeviceEUI,
+                    AppEUI = AppEUI
+                    }
+                });
                 Beep();
             });
 

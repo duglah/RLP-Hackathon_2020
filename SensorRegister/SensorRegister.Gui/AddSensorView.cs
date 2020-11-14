@@ -5,6 +5,7 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using NStack;
 using ReactiveUI;
+using SensorRegister.Core.Api.ThingsNetwork;
 using SensorRegister.Core.ViewModels;
 using SensorRegister.Gui.Utils;
 using Terminal.Gui;
@@ -19,7 +20,7 @@ namespace SensorRegister.Gui
                 // .SetHorizontalMargin(2)
                 .Add(new Label(" "))
                 .Add(InputField("-Device ID", vm => vm.DeviceID))
-                .Add(InputField("-Device EUI", vm => vm.DeviceEUI))
+                .Add(InputField("-Device EUI", vm => vm.DeviceEUI, "AFFEAFFE"))
                 .Add(InputField("-App Key", vm => vm.AppKey))
                 .Add(InputField("-App EUI", vm => vm.AppEUI, "70B3D57ED0035458"))
                 .Below(new Label("  "))
@@ -28,6 +29,7 @@ namespace SensorRegister.Gui
                 .ToTheRight(AddDeviceButton("add"))
                 .ToTheRight(new Label("  "))
                 .ToTheRight(ClearButton("clear"))
+                
                 .Build(this);
         }
 
@@ -83,5 +85,14 @@ namespace SensorRegister.Gui
                 .DisposeWith(_disposable);
             return clearButton;
         }
+        //
+        // View ErrorView()
+        // {
+        //     var label = new Label("");
+        //
+        //     ViewModel.Errors.Subscribe(err => label.Text = err.Message).DisposeWith(_disposable);
+        //
+        //     return label;
+        // }
     }
 }

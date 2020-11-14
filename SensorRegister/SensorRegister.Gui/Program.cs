@@ -19,7 +19,7 @@ namespace SensorRegister.Gui
             router.ShowLogin = () => Application.Run(new LoginView(new LoginViewModel(router)));
             router.ShowAddSensor = () => Application.Run(new AddSensorView(new AddSensorViewModel(router)));
             
-            router.ShowLogin();
+            router.ShowAddSensor();
             
         }
     }

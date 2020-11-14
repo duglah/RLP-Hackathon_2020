@@ -18,9 +18,6 @@ namespace SensorRegister.Core.Api.ThingsNetwork
         [JsonPropertyName("dev_eui")]
         public string DeviceEUI { get; set; }
 
-        [JsonPropertyName("description")]
-        public string Description { get; set; }
-
         [JsonPropertyName("activation_constraints")]
         public string ActivationConstraints { get; }  = "testing"; //OTAA for real
 
