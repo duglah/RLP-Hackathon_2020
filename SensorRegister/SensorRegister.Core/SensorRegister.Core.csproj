@@ -5,11 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Api\DataCake\Models" />
     <Folder Include="ViewModels\" />
     <Folder Include="Api\" />
     <Folder Include="Api\ThingsNetwork\" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="Pharmacist.Common" Version="1.9.1" />
     <PackageReference Include="Pharmacist.MSBuild" Version="1.9.1" />
     <PackageReference Include="ReactiveUI.Fody" Version="12.1.5" />
