@@ -21,7 +21,7 @@ namespace SensorRegister.Gui
         readonly Label statusLabel = new Label(" ");
         private ListView _devicesList;
 
-        public DevicesView(DevicesViewModel viewModel) : base(viewModel, "Sensoren")
+        public DevicesView(DevicesViewModel viewModel) : base(viewModel, "display all sensors")
         {
             ViewBuilder.Create()
                 .SetHorizontalMargin(2)
@@ -38,7 +38,7 @@ namespace SensorRegister.Gui
 
             ViewModel.OnError.Subscribe(err =>
             {
-                MessageBox.ErrorQuery(40, 15, err.Message.Length > 40 ? err.Message.Substring(0, 40) : err.Message, err.Message + "\n" + err.StackTrace, "damn");
+                MessageBox.ErrorQuery(40, 15, err.Message.Length > 40 ? err.Message.Substring(0, 40) : err.Message, err.Message + "\n" + err.StackTrace, "ok");
             }).DisposeWith(_disposable);
 
             Observable.FromEvent<ListViewItemEventArgs>(h => _devicesList.OpenSelectedItem += h, h => _devicesList.OpenSelectedItem -= h)
@@ -54,7 +54,7 @@ namespace SensorRegister.Gui
             statusLabel.Text = "loading...";
             _devices = await ViewModel.LoadDevices() ?? new List<ThingsDeviceModel>();
             statusLabel.Text = $"";
-            Title = $"{_devices.Count} Sensoren";
+            Title = $"{_devices.Count} sensors";
 
             
             _devicesList.Frame = new Rect(new Point(2, 2), new Size(Frame.Width - 2, _devices.Count));

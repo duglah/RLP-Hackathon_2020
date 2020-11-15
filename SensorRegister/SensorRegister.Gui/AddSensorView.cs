@@ -14,8 +14,10 @@ namespace SensorRegister.Gui
 {
     public class AddSensorView : BaseWindow<AddSensorViewModel>
     {
-        public AddSensorView(AddSensorViewModel viewModel) : base(viewModel, "Sensor hinzufuegen")
+        public AddSensorView(AddSensorViewModel viewModel) : base(viewModel, "set in constructor")
         {
+            Title = viewModel.IsReadOnly ? "viewing sensor" : "adding sensor";
+            
             var builder = ViewBuilder.Create()
                 // .SetHorizontalMargin(2)
                 .Add(new Label(" "))
@@ -44,7 +46,7 @@ namespace SensorRegister.Gui
 
             ViewModel.OnError.Subscribe(err =>
             {
-                MessageBox.ErrorQuery(40, 15, err.Message, err.Message + "\n" + err.StackTrace, "damn");
+                MessageBox.ErrorQuery(40, 15, err.Message, err.Message + "\n" + err.StackTrace, "ok");
             }).DisposeWith(_disposable);
         }
 

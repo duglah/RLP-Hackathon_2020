@@ -67,7 +67,6 @@ namespace SensorRegister.Gui.Utils
         {
             return modify(this);
         }
-        
 
         public ViewBuilder Below(View view, Pos xOffset = null, Dim width = null, Dim height = null)
         {
