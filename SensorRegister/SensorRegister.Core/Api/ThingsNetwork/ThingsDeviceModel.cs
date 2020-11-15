@@ -22,5 +22,10 @@ namespace SensorRegister.Core.Api.ThingsNetwork
         public ThingsDeviceModel()
         {
         }
+
+        public override string ToString()
+        {
+            return DeviceId;
+        }
     }
 }

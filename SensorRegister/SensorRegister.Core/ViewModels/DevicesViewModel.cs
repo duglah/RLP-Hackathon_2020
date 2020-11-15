@@ -8,8 +8,12 @@ using System.Reactive.Subjects;
 using System.Runtime.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
+using GraphQL;
+using GraphQL.Client.Http;
+using GraphQL.Client.Serializer.Newtonsoft;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using SensorRegister.Core.Api.DataCake;
 using SensorRegister.Core.Api.ThingsNetwork;
 
 namespace SensorRegister.Core.ViewModels
@@ -27,16 +31,27 @@ namespace SensorRegister.Core.ViewModels
             _router = router;
 
             AddNewDevice = ReactiveCommand.Create(() => { });
-            AddNewDevice.Subscribe(unit => { _router.ShowAddSensor(); }).DisposeWith(_disposable);
+            AddNewDevice.Subscribe(unit => { _router.ShowAddSensor(null); }).DisposeWith(_disposable);
         }
 
         public async Task<List<ThingsDeviceModel>> LoadDevices()
         {
             try
             {
-                var devicesJson = await ThingsNetworkDevicesApi.GetDevices();
-                var devices = new ThingsDeviceModel[] { }.ToList();
+                //--- Load Sensors from thethingsnetwork.org ---
+                var devices = await ThingsNetworkDevicesApi.GetDevices();
                 devices.ForEach(_onDeviceLoaded.OnNext);
+
+                //--- Update DataCake ---
+                try
+                {
+                    await DataCakeApi.UpdateDashboard(devices);
+                }
+                catch (Exception datacakeErr)
+                {
+                    _onError.OnNext(new Exception("DataCake Sync failed\n"+datacakeErr.Message, datacakeErr));
+                }
+
                 return devices;
             }
             catch (Exception err)
@@ -44,6 +59,11 @@ namespace SensorRegister.Core.ViewModels
                 _onError.OnNext(err);
                 return null;
             }
+        }
+
+        public void ShowDevice(ThingsDeviceModel device)
+        {
+            _router.ShowAddSensor(device);
         }
 
 

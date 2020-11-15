@@ -1,4 +1,5 @@
 using System;
+using SensorRegister.Core.Api.ThingsNetwork;
 
 namespace SensorRegister.Core
 {
@@ -6,7 +7,7 @@ namespace SensorRegister.Core
     {
         public Action ShowLogin { get; set; }
         public Action ShowDevices { get; set; }
-        public Action ShowAddSensor { get; set; }
+        public Action<ThingsDeviceModel> ShowAddSensor { get; set; }
 
         public Router()
         {

@@ -43,7 +43,7 @@ namespace SensorRegister.Core.ViewModels
 				canLogin);
 			Login.Subscribe(_ =>
 			{
-				_router.ShowAddSensor();
+				_router.ShowAddSensor(null);
 			});
 
 			_usernameLength = this

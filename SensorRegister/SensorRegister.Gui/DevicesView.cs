@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using NStack;
 using ReactiveUI;
@@ -17,15 +19,32 @@ namespace SensorRegister.Gui
     {
         List<ThingsDeviceModel> _devices = new List<ThingsDeviceModel>();
         readonly Label statusLabel = new Label(" ");
+        private ListView _devicesList;
 
         public DevicesView(DevicesViewModel viewModel) : base(viewModel, "Sensoren")
         {
-            Rerender();
+            ViewBuilder.Create()
+                .SetHorizontalMargin(2)
+                .Add(statusLabel, width: Dim.Fill())
+                .Below(new Label("-------------------------"))
+                .Below(_devicesList = new ListView()
+                {
+                    LayoutStyle = LayoutStyle.Absolute,
+                })
+                .Below(new Label("-------------------------"))
+                .Below(new Label(" "))
+                .Below(AddNewDeviceButton("add new sensor"))
+                .Build(this);
 
             ViewModel.OnError.Subscribe(err =>
             {
-                MessageBox.ErrorQuery(40, 15, err.Message, err.Message + "\n" + err.StackTrace, "damn");
+                MessageBox.ErrorQuery(40, 15, err.Message.Length > 40 ? err.Message.Substring(0, 40) : err.Message, err.Message + "\n" + err.StackTrace, "damn");
             }).DisposeWith(_disposable);
+
+            Observable.FromEvent<ListViewItemEventArgs>(h => _devicesList.OpenSelectedItem += h, h => _devicesList.OpenSelectedItem -= h)
+                .Select(evt => evt.Value as ThingsDeviceModel)
+                .Subscribe(device => ViewModel.ShowDevice(device))
+                .DisposeWith(_disposable);
 
             LoadDevices(statusLabel);
         }
@@ -33,33 +52,13 @@ namespace SensorRegister.Gui
         private async Task LoadDevices(Label statusLabel)
         {
             statusLabel.Text = "loading...";
-            var devices = await ViewModel.LoadDevices() ?? new List<ThingsDeviceModel>();
+            _devices = await ViewModel.LoadDevices() ?? new List<ThingsDeviceModel>();
             statusLabel.Text = $"";
-            Title = $"{devices.Count} Sensoren";
-        }
+            Title = $"{_devices.Count} Sensoren";
 
-        void Rerender()
-        {
-            var builder = ViewBuilder.Create()
-                .SetHorizontalMargin(2)
-                .Add(statusLabel, width: Dim.Fill())
-                .Below(new Label("-------------------------"));
-
-            foreach (var device in _devices)
-            {
-                var label = device.DeviceId;
-                builder.Below(new Button(label)
-                {
-                    LayoutStyle = LayoutStyle.Computed,
-                    Width = label.Length + 4
-                });
-            }
-
-            builder
-                .Below(new Label("-------------------------"))
-                .Below(new Label(" "))
-                .Below(AddNewDeviceButton("add new sensor"))
-                .Build(this);
+            
+            _devicesList.Frame = new Rect(new Point(2, 2), new Size(Frame.Width - 2, _devices.Count));
+            await _devicesList.SetSourceAsync(_devices);
         }
 
 

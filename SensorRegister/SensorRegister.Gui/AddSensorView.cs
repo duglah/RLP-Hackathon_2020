@@ -16,7 +16,7 @@ namespace SensorRegister.Gui
     {
         public AddSensorView(AddSensorViewModel viewModel) : base(viewModel, "Sensor hinzufuegen")
         {
-            ViewBuilder.Create()
+            var builder = ViewBuilder.Create()
                 // .SetHorizontalMargin(2)
                 .Add(new Label(" "))
                 .Add(InputField("-Device ID", vm => vm.DeviceID))
@@ -26,17 +26,25 @@ namespace SensorRegister.Gui
                 .Add(InputField("-App EUI", vm => vm.AppEUI, "70B3D57ED0035458"))
                 .Below(new Label("  "))
                 .Below(StatusLabel())
-                .Below(new Label("  "))
-                .ToTheRight(AddDeviceButton("add"))
-                .ToTheRight(new Label("  "))
-                .ToTheRight(ClearButton("clear"))
-                .Below(new Label("  "))
+                .Below(new Label("  "));
+
+            if (!ViewModel.IsReadOnly)
+                builder.ToTheRight(AddDeviceButton("add"))
+                    .ToTheRight(new Label("  "))
+                    .ToTheRight(ClearButton("clear"))
+                    .Below(new Label("  "));
+
+            else
+                builder.ToTheRight(DeleteButton("delete"))
+                    .ToTheRight(new Label("  "));
+
+            builder
                 .ToTheRight(CancelButton("cancel"))
                 .Build(this);
 
             ViewModel.OnError.Subscribe(err =>
             {
-                MessageBox.ErrorQuery(40, 15, err.Message, err.Message+"\n"+err.StackTrace, "damn");
+                MessageBox.ErrorQuery(40, 15, err.Message, err.Message + "\n" + err.StackTrace, "damn");
             }).DisposeWith(_disposable);
         }
 
@@ -83,13 +91,29 @@ namespace SensorRegister.Gui
             return addDeviceButton;
         }
         
+        Button DeleteButton(string label)
+        {
+            var addDeviceButton = new Button(label)
+            {
+                LayoutStyle = LayoutStyle.Computed,
+                Width = label.Length + 4
+            };
+            Terminal.Gui.EventExtensions.Events(addDeviceButton)
+                .Clicked
+                .InvokeCommand(ViewModel, x => x.DeleteDevice)
+                .DisposeWith(_disposable);
+
+            return addDeviceButton;
+        }
+
         View StatusLabel()
         {
             var empty = "-----------------------------";
-            
+
             var label = new Label(empty);
 
-            ViewModel.OnDeviceAdded.Subscribe(device => label.Text = $"-> added {device.DeviceId}" ).DisposeWith(_disposable);
+            ViewModel.OnDeviceAdded.Subscribe(device => label.Text = $"-> added {device.DeviceId}")
+                .DisposeWith(_disposable);
 
             return label;
         }
@@ -103,7 +127,7 @@ namespace SensorRegister.Gui
                 .DisposeWith(_disposable);
             return clearButton;
         }
-        
+
         Button CancelButton(string label = "Cancel")
         {
             var cancelButton = new Button(label);
@@ -113,6 +137,5 @@ namespace SensorRegister.Gui
                 .DisposeWith(_disposable);
             return cancelButton;
         }
-        
     }
 }

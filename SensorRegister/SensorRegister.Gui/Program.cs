@@ -21,7 +21,7 @@ namespace SensorRegister.Gui
 
             router.ShowLogin = () => ShowWindow(new LoginView(new LoginViewModel(router)));
             router.ShowDevices = () => ShowWindow(new DevicesView(new DevicesViewModel(router)));
-            router.ShowAddSensor = () => ShowWindow(new AddSensorView(new AddSensorViewModel(router)));
+            router.ShowAddSensor = (device) => ShowWindow(new AddSensorView(new AddSensorViewModel(router, device)));
 
             router.ShowDevices();
         }
