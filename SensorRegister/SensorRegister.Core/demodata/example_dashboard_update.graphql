@@ -1,0 +1,13 @@
+mutation {
+  updateDashboard(input: {
+    workspace: "2966c4d8-7f98-4e89-8d7a-60028e1b75a2",
+    dashboard: "1eef9d8c-f4b1-4675-87f6-fa4bcee56b82",
+    name: "RLP Hackathon",
+    public: false,
+    icon: "chart-line", 
+    dashboards: "[{\"name\":\"Dashboard\",\"widgets\":{\"41db57dd-6c17-43a2-ab60-c0a47a5d41a9\":{\"meta\":{\"field\":{\"device\":\"c52dda4a-6fad-4cbc-b5b8-bdc7d7fecdf0\"},\"title\":{\"en\":\"\",\"de\":\"\"},\"displayOn\":{\"de\":\"Lüften notwendig\"},\"displayOff\":{\"de\":\"Luftqualität ok\"},\"displayOnColor\":\"rgba(208,2,27,1)\",\"displayOffColor\":\"rgba(126,211,33,1)\",\"icon\":\"archway\"},\"widget\":\"Boolean\",\"layouts\":{\"lg\":{\"w\":2,\"h\":2,\"x\":0,\"y\":0,\"i\":\"41db57dd-6c17-43a2-ab60-c0a47a5d41a9\",\"moved\":false,\"static\":false}}},\"asdasfdsfsdf\":{\"widget\":\"Value\",\"layouts\":{\"lg\":{\"w\":4,\"h\":2,\"x\":0,\"y\":2,\"i\":\"021001f4-c7f4-4d66-8068-50431476e47d\",\"moved\":false,\"static\":false}},\"meta\":{\"title\":{\"en\":\"CO^2\",\"de\":\"CO^2\"},\"decimalPlaces\":2,\"timerangeOperation\":{\"other\":false,\"start\":\"\",\"end\":\"\",\"operator\":\"\"},\"field\":{\"device\":\"e1c1da0d-d6c9-4806-a960-b432a4aa41f3\",\"fieldName\":\"CO2\",\"fieldType\":\"INT\"}}}}}]"
+  }) {
+    ok,
+    dashboard{name, dashboards}
+  }
+}

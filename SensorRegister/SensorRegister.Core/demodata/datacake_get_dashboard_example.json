@@ -1,0 +1,9 @@
+{
+  "operationName": "fetchDashboardData",
+  "variables": {
+    "dashboardId": "1eef9d8c-f4b1-4675-87f6-fa4bcee56b82",
+    "dashboardIdx": 0,
+    "dashboardConfig": "{\"name\":\"Dashboard\",\"widgets\":{\"41db57dd-6c17-43a2-ab60-c0a47a5d41a9\":{\"meta\":{\"field\":{\"device\":\"c52dda4a-6fad-4cbc-b5b8-bdc7d7fecdf0\"},\"title\":{\"en\":\"\",\"de\":\"\"},\"displayOn\":{\"de\":\"Lüften notwendig\"},\"displayOff\":{\"de\":\"Luftqualität ok\"},\"displayOnColor\":\"rgba(208,2,27,1)\",\"displayOffColor\":\"rgba(126,211,33,1)\",\"icon\":\"archway\"},\"widget\":\"Boolean\",\"layouts\":{\"lg\":{\"w\":4,\"h\":2,\"x\":0,\"y\":0,\"i\":\"41db57dd-6c17-43a2-ab60-c0a47a5d41a9\",\"moved\":false,\"static\":false}}},\"26961715-41db-448e-b1f7-cd4c1f07cc4d\":{\"widget\":\"Value\",\"layouts\":{\"lg\":{\"w\":4,\"h\":2,\"x\":0,\"y\":2,\"i\":\"26961715-41db-448e-b1f7-cd4c1f07cc4d\",\"moved\":false,\"static\":false}},\"meta\":{\"title\":{\"en\":\"CO2\",\"de\":\"CO2\"},\"decimalPlaces\":2,\"timerangeOperation\":{\"other\":false,\"start\":\"\",\"end\":\"\",\"operator\":\"\",\"operation\":\"\"},\"field\":{\"device\":\"91c15bb2-1a8d-4be1-8498-2bf59c75723b\",\"fieldName\":\"CO2\",\"fieldType\":\"INT\"},\"gaugeRanges\":[],\"unit\":{\"de\":\"°C\",\"en\":\"°C\"}}}}}"
+  },
+  "query": "query fetchDashboardData($dashboardId: String!, $dashboardIdx: Int, $dashboardConfig: JSONString) {\n  dashboard(id: $dashboardId) {\n    id\n    dashboardData(dashboard: $dashboardIdx, dashboardConfig: $dashboardConfig)\n    __typename\n  }\n}\n"
+}
